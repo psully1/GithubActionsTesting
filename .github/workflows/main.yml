@@ -1,9 +1,7 @@
-name: On push to main
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - 'main'
+    tags:
+      - 'feature'
 
 jobs:
   createrelease:
@@ -12,22 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
+
+
+
+      - name: Bump release version
+        id: bump_version
+        uses: christian-draeger/increment-semantic-version@1.0.3
         with:
-          fallback: 1.0.0
-      - name: 'Get next minor version'
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
-        with:
-          version: ${{ steps.previoustag.outputs.tag }}
-      - name: 'Create new milestone'
-        id: createmilestone
-        uses: "WyriHaximus/github-action-create-milestone@v1"
-        with:
-          title: ${{ steps.semvers.outputs.patch }}
-      - name: Echo Verion
-        run: echo ${{ steps.semvers.outputs.patch }}
+          current-version: ${{ steps.previoustag.outputs.tag }}
+          version-fragment: 'feature'
+
+      - name: Do something with your bumped release version
+        run: echo ${{ steps.bump_version.outputs.next-version }}
 
