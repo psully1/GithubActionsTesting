@@ -1,0 +1,14 @@
+name: On push to main
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  createrelease:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Echo Release
+      run: echo ${{ github.event.inputs.versionName }}
