@@ -1,7 +1,5 @@
 on:
   push:
-    types:
-      - labeled
     branches:
       - main
 
