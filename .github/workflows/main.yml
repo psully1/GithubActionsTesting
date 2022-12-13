@@ -12,14 +12,17 @@ jobs:
           run: echo ${{ github.event.label }}
           
         - name: Run workflow for a major release
-          if: ${{ github.event.label.name == 'major' }}
+          if: contains( github.event.pull_request.labels.*.name, 'major')
+#           if: ${{ github.event.label.name == 'major' }}
           run: echo 'Running workflow for a major release...'
           
         - name: Run workflow for a minor release
-          if: ${{ github.event.label.name == 'minor' }}
+          if: contains( github.event.pull_request.labels.*.name, 'minor')
+#           if: ${{ github.event.label.name == 'minor' }}
           run: echo 'Running workflow for a minor release...'
           
         - name: Run workflow for a patch release
-          if: ${{ github.event.label.name == 'patch' }}
+          if: contains( github.event.pull_request.labels.*.name, 'patch')
+#           if: ${{ github.event.label.name == 'patch' }}
           run: echo 'Running workflow for a patch release...'
 
