@@ -8,6 +8,9 @@ jobs:
   build:
       runs-on: ubuntu-latest
       steps:
+        - name: Echo Labels
+          run: echo ${{ github.event.label }}
+          
         - name: Run workflow for a major release
           if: ${{ github.event.label.name == 'major' }}
           run: echo 'Running workflow for a major release...'
