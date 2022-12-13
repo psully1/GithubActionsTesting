@@ -16,3 +16,7 @@ jobs:
           if: ${{ !github.event.label.name == 'minor' }}
           run: echo 'NOT running workflow for a minor release...'
 
+        - name: Do NOT run workflow for a minor release
+          if: ${{ github.event.label.name != 'minor' }}
+          run: echo 'NOT running workflow for a minor release...'
+
