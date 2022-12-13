@@ -48,7 +48,7 @@ export default function Layout() {
                 })
               }}
             >
-              {item.name} test1.
+              {item.name} test2.
             </li>
           ))}
         </ul>
