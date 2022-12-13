@@ -8,15 +8,15 @@ jobs:
   build:
       runs-on: ubuntu-latest
       steps:
+        - name: Run workflow for a major release
+          if: ${{ github.event.label.name == 'major' }}
+          run: echo 'Running workflow for a major release...'
+          
         - name: Run workflow for a minor release
           if: ${{ github.event.label.name == 'minor' }}
           run: echo 'Running workflow for a minor release...'
-
-        - name: Do NOT run workflow for a minor release
-          if: ${{ !github.event.label.name == 'minor' }}
-          run: echo 'NOT running workflow for a minor release...'
-
-        - name: Do NOT run workflow for a minor release
-          if: ${{ github.event.label.name != 'minor' }}
-          run: echo 'NOT running workflow for a minor release...'
+          
+        - name: Run workflow for a patch release
+          if: ${{ github.event.label.name == 'patch' }}
+          run: echo 'Running workflow for a patch release...'
 
