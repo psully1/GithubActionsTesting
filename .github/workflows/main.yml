@@ -35,7 +35,7 @@ jobs:
           replace: ''
       
       - name: echo
-        run: ${{ steps.findandreplace.outputs.value }}
+        run: echo ${{ steps.findandreplace.outputs.value }}
 
       - name: Bump release version
         id: bump_version
