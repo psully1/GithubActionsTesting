@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check if merged
+    - uses: actions/checkout@v3
 
   get_latest_version:
     needs: [check_if_merged]
