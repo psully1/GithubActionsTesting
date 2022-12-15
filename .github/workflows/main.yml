@@ -10,7 +10,7 @@ on:
 
 jobs:
   if_merged:
-    if: ${{ github.event.pull_request.merged == true }}
+#     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -35,14 +35,14 @@ jobs:
         with:
           title: ${{ steps.semvers.outputs.patch }}
 
-      - name: Run workflow for a major release
-        if: contains( github.event.pull_request.labels.*.name, 'major')
-        run: echo 'Running workflow for a major release...'
+#       - name: Run workflow for a major release
+#         if: contains( github.event.pull_request.labels.*.name, 'major')
+#         run: echo 'Running workflow for a major release...'
 
-      - name: Run workflow for a minor release
-        if: contains( github.event.pull_request.labels.*.name, 'minor')
-        run: echo 'Running workflow for a minor release...'
+#       - name: Run workflow for a minor release
+#         if: contains( github.event.pull_request.labels.*.name, 'minor')
+#         run: echo 'Running workflow for a minor release...'
 
-      - name: Run workflow for a patch release
-        if: contains( github.event.pull_request.labels.*.name, 'patch')
-        run: echo 'Running workflow for a patch release...'
+#       - name: Run workflow for a patch release
+#         if: contains( github.event.pull_request.labels.*.name, 'patch')
+#         run: echo 'Running workflow for a patch release...'
