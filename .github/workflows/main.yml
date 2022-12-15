@@ -14,33 +14,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-#      Note Checkout is required for ${GITHUB_WORKSPACE} to be not empty
-      - name: Checkout
-        uses: actions/checkout@v1
+    - name: 'Get Previous tag'
+      id: previoustag
+      uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      with:
+        fallback: 1.0.0
 
+    - name: 'Get next minor version'
+      id: semvers
+      uses: "WyriHaximus/github-action-next-semvers@v1"
+      with:
+        run: ${{ steps.previoustag.outputs.tag }}
 
-#     Examples
-      - name: Increment Step Patch
-        id: increment-semver-patch
-        uses: Benbentwo/increment-semver@master
-        with:
-          version-level: '-p'
-
-      - name: Get the output version
-        run: |
-          echo "The new patch version was ${{ steps.increment-semver-patch.outputs.version }}"
-
-#       - name: 'Get Previous tag'
-#         id: previoustag
-#         uses: "WyriHaximus/github-action-get-previous-tag@v1"
-#         with:
-#           fallback: 1.0.0
-
-#       - name: 'Get next minor version'
-#         id: semvers
-#         uses: "WyriHaximus/github-action-next-semvers@v1"
-#         with:
-#           run: ${{ steps.previoustag.outputs.tag }}
+    - name: Bump release version
+      id: bump_version
+      uses: christian-draeger/increment-semantic-version@1.0.3
+      with:
+        current-version: ${{ steps.previoustag.outputs.tag }}
+        version-fragment: 'feature'
+    - name: Do something with your bumped release version
+      run: echo ${{ steps.bump_version.outputs.next-version }}
+      # will print 2.12.0
 
 #       - name: Run workflow for a major release
 #         if: contains( github.event.pull_request.labels.*.name, 'major')
