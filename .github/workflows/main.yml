@@ -40,7 +40,7 @@ jobs:
         uses: christian-draeger/increment-semantic-version@1.0.3
         with:
           current-version: ${{ steps.findandreplace.outputs.value }}
-          version-fragment: 'patch'
+          version-fragment: 'bug'
 
       - name: Do something with your bumped release version
         run: echo ${{ steps.bump_version.outputs.next-version }}
