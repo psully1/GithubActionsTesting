@@ -34,15 +34,12 @@ jobs:
           source: 'v0.1.24'
           find: 'v'
           replace: ''
-      
-      - name: echo
-        run: echo ${{ steps.findandreplace.outputs.value }}
 
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.3
         with:
-          current-version: ${{ steps.previoustag.outputs.tag }}
+          current-version: ${{ steps.findandreplace.outputs.value }}
           version-fragment: 'feature'
 
       - name: Do something with your bumped release version
