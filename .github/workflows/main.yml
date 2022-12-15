@@ -27,14 +27,15 @@ jobs:
         with:
           version: ${{ steps.previoustag.outputs.tag }}
 
-#       - name: Bump release version
-#         id: bump_version
-#         uses: christian-draeger/increment-semantic-version@1.0.3
-#         with:
-#           current-version: ${{ steps.previoustag.outputs.tag }}
-#           version-fragment: 'feature'
-#       - name: Do something with your bumped release version
-#         run: echo ${{ steps.bump_version.outputs.next-version }}
+      - name: Bump release version
+        id: bump_version
+        uses: christian-draeger/increment-semantic-version@1.0.3
+        with:
+          current-version: ${{ steps.previoustag.outputs.tag }}
+          version-fragment: 'feature'
+
+      - name: Do something with your bumped release version
+        run: echo ${{ steps.bump_version.outputs.next-version }}
         # will print 2.12.0
 
 #       - name: Run workflow for a major release
