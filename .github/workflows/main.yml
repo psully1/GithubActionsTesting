@@ -13,14 +13,34 @@ jobs:
 #     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
-      - id: get_version
-        uses: battila7/get-version-action@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+
+      - name: 'Get latest version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+      
+      - name: 'Find and remove v from version'
+        uses: mad9000/actions-find-and-replace-string@2
+        with:
+          source: ${{ steps.previoustag.outputs.tag }}
+          find: 'v'
+          replace: ''
 
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.3
         with:
-          current-version: ${{ steps.get_version.outputs.version-without-v }}
+          current-version: ${{ steps.findandreplace.outputs.value }}
           version-fragment: 'feature'
 
       - name: Do something with your bumped release version
