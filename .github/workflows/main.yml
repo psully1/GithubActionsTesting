@@ -31,7 +31,7 @@ jobs:
         uses: mad9000/actions-find-and-replace-string@2
         id: findandreplace
         with:
-          source: 'v0.1.24'
+          source: ${{ steps.semvers.outputs.patch }}
           find: 'v'
           replace: ''
 
