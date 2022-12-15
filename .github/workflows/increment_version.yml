@@ -7,6 +7,9 @@ jobs:
     name: Check if merged
     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
+    steps:
+    - name: Check if merged
+      run: echo "Merged"
 
   get_latest_version:
     needs: [check_if_merged]
