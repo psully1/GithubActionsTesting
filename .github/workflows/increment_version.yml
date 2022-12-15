@@ -1,0 +1,36 @@
+name: Release Branch Versioning
+on:
+  workflow_dispatch:
+#   pull_request:
+#     types:
+#       - closed
+#     branches:
+#       - main
+
+
+jobs:
+  check_if_merged:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+
+  get_latest_version:
+    needs: [check_if_merged]
+    runs-on: ubuntu-latest
+    steps:
+          
+# =======================================================================================
+# Get latest release version
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+    
