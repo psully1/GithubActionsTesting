@@ -13,7 +13,7 @@ export default function Switch({ value, onChange }: SwitchProps) {
             onChange(!value)
           }}
           type="checkbox"
-          className="absolute right-4 block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 bg-white outline-none duration-200 ease-in checked:right-0 checked:bg-slate-500 focus:outline-none"
+          className="right-4 block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 bg-white outline-none duration-200 ease-in checked:right-0 checked:bg-slate-500 focus:outline-none"
         />
       </label>
     </div>
