@@ -29,6 +29,7 @@ jobs:
       
       - name: 'Find and remove v from version'
         uses: mad9000/actions-find-and-replace-string@2
+        id: findandreplace
         with:
           source: 'v0.1.24'
           find: 'v'
