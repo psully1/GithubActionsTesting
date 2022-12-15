@@ -1,32 +1,34 @@
 name: Release Branch Versioning
 on:
-  workflow_dispatch:
-#   pull_request:
-#     types:
-#       - closed
-#     branches:
-#       - main
+#   workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 
 jobs:
   if_merged:
-#     if: ${{ github.event.pull_request.merged == true }}
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
+# Get latest release version
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+          fetch-depth: 0
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+
       - name: 'Get next minor version'
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
-      
+          
+# =======================================================================================
+# Remove "v" from version string
       - name: 'Find and remove v from version'
         uses: mad9000/actions-find-and-replace-string@2
         id: findandreplace
@@ -34,25 +36,36 @@ jobs:
           source: ${{ steps.previoustag.outputs.tag }}
           find: 'v'
           replace: ''
-
+          
+# =======================================================================================
+# If patch release
       - name: Bump release version
-        id: bump_version
+        if: contains( github.event.pull_request.labels.*.name, 'patch')
+        id: bump_version_patch
         uses: christian-draeger/increment-semantic-version@1.0.3
         with:
           current-version: ${{ steps.findandreplace.outputs.value }}
           version-fragment: 'bug'
 
+# If minor release
+      - name: Bump release version
+        if: contains( github.event.pull_request.labels.*.name, 'minor')
+        id: bump_version_minor
+        uses: christian-draeger/increment-semantic-version@1.0.3
+        with:
+          current-version: ${{ steps.findandreplace.outputs.value }}
+          version-fragment: 'feature'
+
+# If major release
+      - name: Bump release version
+        if: contains( github.event.pull_request.labels.*.name, 'major')
+        id: bump_version_major
+        uses: christian-draeger/increment-semantic-version@1.0.3
+        with:
+          current-version: ${{ steps.findandreplace.outputs.value }}
+          version-fragment: 'major'
+          
+# =======================================================================================
+# Do something with output
       - name: Do something with your bumped release version
-        run: echo ${{ steps.bump_version.outputs.next-version }}
-
-#       - name: Run workflow for a major release
-#         if: contains( github.event.pull_request.labels.*.name, 'major')
-#         run: echo 'Running workflow for a major release...'
-
-#       - name: Run workflow for a minor release
-#         if: contains( github.event.pull_request.labels.*.name, 'minor')
-#         run: echo 'Running workflow for a minor release...'
-
-#       - name: Run workflow for a patch release
-#         if: contains( github.event.pull_request.labels.*.name, 'patch')
-#         run: echo 'Running workflow for a patch release...'
+        run: echo ${{ steps.bump_version_patch.outputs.next-version }}
