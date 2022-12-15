@@ -13,9 +13,22 @@ jobs:
 #     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+
+#      Note Checkout is required for ${GITHUB_WORKSPACE} to be not empty
+      - name: Checkout
+        uses: actions/checkout@v1
+
+
+#     Examples
+      - name: Increment Step Patch
+        id: increment-semver-patch
+        uses: Benbentwo/increment-semver@master
         with:
-          fetch-depth: 0
+          version-level: '-p'
+
+      - name: Get the output version
+        run: |
+          echo "The new patch version was ${{ steps.increment-semver-patch.outputs.version }}"
 
 #       - name: 'Get Previous tag'
 #         id: previoustag
@@ -28,12 +41,6 @@ jobs:
 #         uses: "WyriHaximus/github-action-next-semvers@v1"
 #         with:
 #           run: ${{ steps.previoustag.outputs.tag }}
-          
-      - name: Increment Step Patch
-        id: increment-semver-patch
-        uses: Benbentwo/increment-semver@master
-        with:
-          version-level: '-p'
 
 #       - name: Run workflow for a major release
 #         if: contains( github.event.pull_request.labels.*.name, 'major')
