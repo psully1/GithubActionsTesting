@@ -32,7 +32,7 @@ jobs:
       - name: 'Find and remove v from version'
         uses: mad9000/actions-find-and-replace-string@2
         with:
-          source: ${{ steps.previoustag.outputs.tag }}
+          source: ${{ steps.semvers.outputs.patch }}
           find: 'v'
           replace: ''
 
