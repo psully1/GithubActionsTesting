@@ -35,6 +35,12 @@ jobs:
           source: ${{ steps.previoustag.outputs.tag }}
           find: 'v'
           replace: ''
+      
+      - name: echos
+        run: ${{ steps.previoustag.outputs.tag }}
+      
+      - name: echos
+        run: ${{ steps.previoustag.outputs.tag }}
 
       - name: Bump release version
         id: bump_version
