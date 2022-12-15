@@ -27,12 +27,15 @@ jobs:
         with:
           version: ${{ steps.previoustag.outputs.tag }}
       
-#       - name: 'Find and remove v from version'
-#         uses: mad9000/actions-find-and-replace-string@2
-#         with:
-#           source: ${{ steps.semvers.outputs.patch }}
-#           find: 'v'
-#           replace: ''
+      - name: 'Find and remove v from version'
+        uses: mad9000/actions-find-and-replace-string@2
+        with:
+          source: 'v0.1.24'
+          find: 'v'
+          replace: ''
+      
+      - name: echo
+        run: ${{ steps.findandreplace.outputs.value }}
 
       - name: Bump release version
         id: bump_version
