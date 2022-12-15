@@ -13,32 +13,29 @@ jobs:
 #     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
-    
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
 
-    - name: 'Get Previous tag'
-      id: previoustag
-      uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      with:
-        fallback: 1.0.0
-
-    - name: 'Get next minor version'
-      id: semvers
-      uses: "WyriHaximus/github-action-next-semvers@v1"
-      with:
-        run: ${{ steps.previoustag.outputs.tag }}
-
-    - name: Bump release version
-      id: bump_version
-      uses: christian-draeger/increment-semantic-version@1.0.3
-      with:
-        current-version: ${{ steps.previoustag.outputs.tag }}
-        version-fragment: 'feature'
-    - name: Do something with your bumped release version
-      run: echo ${{ steps.bump_version.outputs.next-version }}
-      # will print 2.12.0
+#       - name: Bump release version
+#         id: bump_version
+#         uses: christian-draeger/increment-semantic-version@1.0.3
+#         with:
+#           current-version: ${{ steps.previoustag.outputs.tag }}
+#           version-fragment: 'feature'
+#       - name: Do something with your bumped release version
+#         run: echo ${{ steps.bump_version.outputs.next-version }}
+        # will print 2.12.0
 
 #       - name: Run workflow for a major release
 #         if: contains( github.event.pull_request.labels.*.name, 'major')
