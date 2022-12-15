@@ -26,8 +26,6 @@ jobs:
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
-      - name: test
-        run: echo ${{ steps.findandreplace.outputs }}
           
 # =======================================================================================
 # Remove "v" from version string
@@ -70,4 +68,4 @@ jobs:
 # =======================================================================================
 # Do something with output
       - name: Do something with your bumped release version
-        run: echo ${{ steps.bump_version_patch.outputs.next-version }}
+        run: echo ${{ steps.bump_version_patch.outputs.version-fragment }}
