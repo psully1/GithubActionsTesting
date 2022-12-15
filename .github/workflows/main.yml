@@ -37,7 +37,7 @@ jobs:
           replace: ''
       
       - name: echos
-        run: ${{ steps.previoustag.outputs.tag }}
+        run: ${{ steps.findandreplace.outputs.value }}
       
       - name: echos
         run: ${{ steps.previoustag.outputs.tag }}
