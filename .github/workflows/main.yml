@@ -27,18 +27,18 @@ jobs:
         with:
           version: ${{ steps.previoustag.outputs.tag }}
       
-      - name: 'Find and remove v from version'
-        uses: mad9000/actions-find-and-replace-string@2
-        with:
-          source: ${{ steps.semvers.outputs.patch }}
-          find: 'v'
-          replace: ''
+#       - name: 'Find and remove v from version'
+#         uses: mad9000/actions-find-and-replace-string@2
+#         with:
+#           source: ${{ steps.semvers.outputs.patch }}
+#           find: 'v'
+#           replace: ''
 
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.3
         with:
-          current-version: ${{ steps.findandreplace.outputs.value }}
+          current-version: ${{ steps.previoustag.outputs.tag }}
           version-fragment: 'feature'
 
       - name: Do something with your bumped release version
