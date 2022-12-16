@@ -1,6 +1,11 @@
 name: Increment Version
 on:
-  workflow_dispatch:
+#   workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   check_if_merged:
@@ -8,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check if merged
-    - uses: actions/checkout@v3
+      run: echo "Merged"
 
   get_latest_version:
     needs: [check_if_merged]
