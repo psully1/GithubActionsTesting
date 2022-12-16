@@ -15,24 +15,43 @@ jobs:
     - name: Check if merged
       run: echo "Merged"
 
+
   get_latest_version:
-    needs: [check_if_merged]
+    uses: psully1/GithubActionsTesting/.github/workflows/get_latest_version.yml@v1
+      
+
+  format_and_increment_latest_verion:
+    needs: [get_latest_version]
     runs-on: ubuntu-latest
     steps:
-          
-# =======================================================================================
-# Get latest release version
-      - uses: actions/checkout@v3
+      # If patch release
+      - name: Bump release version
+        if: contains( github.event.pull_request.labels.*.name, 'patch')
+        id: bump_version_patch
+        uses: christian-draeger/increment-semantic-version@1.0.3
         with:
-          fetch-depth: 0
+          current-version: ${{ get_latest_version.outputs.formatted_version }}
+          version-fragment: 'bug'
 
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-
-      - name: 'Get next minor version'
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
+      # If minor release
+      - name: Bump release version
+        if: contains( github.event.pull_request.labels.*.name, 'minor')
+        id: bump_version_minor
+        uses: christian-draeger/increment-semantic-version@1.0.3
         with:
-          version: ${{ steps.previoustag.outputs.tag }}
+          current-version: ${{ get_latest_version.outputs.formatted_version }}
+          version-fragment: 'feature'
+
+      # If major release
+      - name: Bump release version
+        if: contains( github.event.pull_request.labels.*.name, 'major')
+        id: bump_version_major
+        uses: christian-draeger/increment-semantic-version@1.0.3
+        with:
+          current-version: ${{ get_latest_version.outputs.formatted_version }}
+          version-fragment: 'major'
+
+      # Do something with output
+      - name: Do something with your bumped release version
+        run: echo ${{ steps.bump_version_patch.outputs.version-fragment }}
     
