@@ -20,7 +20,7 @@ jobs:
 
 
   get_latest_version:
-    uses: .github/workflows/get_latest_version.yml@e8c156123d34196c1e0089da1a40f2965a0dbe4e
+    uses: ./.github/workflows/get_latest_version.yml@e8c156123d34196c1e0089da1a40f2965a0dbe4e
       
 
   format_and_increment_latest_verion:
