@@ -1,9 +1,10 @@
 name: Get Latest Version
 on:
   workflow_call:
-#     outputs:
-#       formatted_version:
-#         description: "Formatted version string"
+    outputs:
+      formatted_version:
+        description: "Formatted version string"
+        value: "Hello Output"
 #         value: ${{ steps.findandreplace.outputs.value }}
 
 jobs:
