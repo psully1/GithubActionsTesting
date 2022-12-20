@@ -8,54 +8,51 @@ on:
       - main
 
 jobs:
-  check_if_merged:
+  checkout_if_merged:
     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Main
       uses: actions/checkout@v2
 
-    - name: Check if merged
-      run: echo "Merged"
-
 
   get_latest_version:
-    needs: [check_if_merged]
+    needs: [checkout_if_merged]
     uses: ./.github/workflows/get_latest_version.yml
       
 
-  format_and_increment_latest_verion:
-    needs: [get_latest_version]
-    runs-on: ubuntu-latest
-    steps:
-      # If patch release
-      - name: Bump release version
-        if: contains( github.event.pull_request.labels.*.name, 'patch')
-        id: bump_version_patch
-        uses: christian-draeger/increment-semantic-version@1.0.3
-        with:
-          current-version: ${{ get_latest_version.outputs.formatted_version }}
-          version-fragment: 'bug'
+#   format_and_increment_latest_verion:
+#     needs: [get_latest_version]
+#     runs-on: ubuntu-latest
+#     steps:
+#       # If patch release
+#       - name: Bump release version
+#         if: contains( github.event.pull_request.labels.*.name, 'patch')
+#         id: bump_version_patch
+#         uses: christian-draeger/increment-semantic-version@1.0.3
+#         with:
+#           current-version: ${{ get_latest_version.outputs.formatted_version }}
+#           version-fragment: 'bug'
 
-      # If minor release
-      - name: Bump release version
-        if: contains( github.event.pull_request.labels.*.name, 'minor')
-        id: bump_version_minor
-        uses: christian-draeger/increment-semantic-version@1.0.3
-        with:
-          current-version: ${{ get_latest_version.outputs.formatted_version }}
-          version-fragment: 'feature'
+#       # If minor release
+#       - name: Bump release version
+#         if: contains( github.event.pull_request.labels.*.name, 'minor')
+#         id: bump_version_minor
+#         uses: christian-draeger/increment-semantic-version@1.0.3
+#         with:
+#           current-version: ${{ get_latest_version.outputs.formatted_version }}
+#           version-fragment: 'feature'
 
-      # If major release
-      - name: Bump release version
-        if: contains( github.event.pull_request.labels.*.name, 'major')
-        id: bump_version_major
-        uses: christian-draeger/increment-semantic-version@1.0.3
-        with:
-          current-version: ${{ get_latest_version.outputs.formatted_version }}
-          version-fragment: 'major'
+#       # If major release
+#       - name: Bump release version
+#         if: contains( github.event.pull_request.labels.*.name, 'major')
+#         id: bump_version_major
+#         uses: christian-draeger/increment-semantic-version@1.0.3
+#         with:
+#           current-version: ${{ get_latest_version.outputs.formatted_version }}
+#           version-fragment: 'major'
 
-      # Do something with output
-      - name: Do something with your bumped release version
-        run: echo ${{ steps.bump_version_patch.outputs.version-fragment }}
+#       # Do something with output
+#       - name: Do something with your bumped release version
+#         run: echo ${{ steps.bump_version_patch.outputs.version-fragment }}
     
