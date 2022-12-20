@@ -5,7 +5,7 @@ on:
       formatted_version:
         description: "Formatted version string"
 #         value: "Hello Output"
-        value: ${{ steps.findandreplace.outputs.value }}
+        value: ${{ jobs.get_latest_version.steps.findandreplace.outputs.value }}
 
 jobs:
   get_latest_version:
