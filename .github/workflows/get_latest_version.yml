@@ -4,7 +4,6 @@ on:
     outputs:
       formatted_version:
         description: "Formatted version string"
-#         value: "Hello Output"
         value: ${{ jobs.get_latest_version.steps.findandreplace.outputs.value }}
 
 jobs:
