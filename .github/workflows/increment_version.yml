@@ -17,7 +17,7 @@ jobs:
 
 
   get_latest_version:
-    uses: ./.github/workflows/get_latest_version.yml
+    uses: psully1/GithubActionsTesting/.github/workflows/get_latest_version.yml@v1
       
 
   format_and_increment_latest_verion:
